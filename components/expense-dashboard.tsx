@@ -50,8 +50,8 @@ type DashboardData = { movements: Movement[]; budgets: Budget[]; goals: Goal[] }
 
 const EXPENSE_CATEGORIES = ["Casa", "Universidad", "Gasolina", "Alimentación", "Internet", "Transporte", "Salud", "Ocio", "Otros"];
 const INCOME_CATEGORIES = ["Salario", "Comisiones", "Ventas", "Otros ingresos"];
-const CHART_COLORS = ["#126a55", "#e28b3b", "#376fa3", "#8a5cad", "#d04f5e", "#45968a"];
-const chartConfig = { amount: { label: "Total", color: "#126a55" } } satisfies ChartConfig;
+const CHART_COLORS = ["#a855f7", "#42f5ad", "#7c8cff", "#d86cff", "#ff5d8f", "#b6ff5c"];
+const chartConfig = { amount: { label: "Total", color: "#a855f7" } } satisfies ChartConfig;
 
 const quetzales = (cents: number) =>
   new Intl.NumberFormat("es-GT", { style: "currency", currency: "GTQ", minimumFractionDigits: 2 }).format(cents / 100);
@@ -148,12 +148,12 @@ export function ExpenseDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,_#dcefe9_0,_transparent_32rem)] pb-16 text-foreground">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,_rgba(168,85,247,.16)_0,_transparent_32rem),radial-gradient(circle_at_bottom_left,_rgba(66,245,173,.08)_0,_transparent_30rem)] pb-16 text-foreground">
       <Toaster richColors position="top-center" />
-      <header className="border-b border-white/70 bg-white/80 backdrop-blur-xl">
+      <header className="border-b border-white/10 bg-[#09070e]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <div className="grid size-11 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-[0_8px_24px_rgba(18,106,85,.24)]"><WalletCards className="size-5" /></div>
+            <div className="grid size-11 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-[0_0_26px_rgba(168,85,247,.38)]"><WalletCards className="size-5" /></div>
             <div><p className="text-xs font-bold uppercase tracking-[.18em] text-primary">Mi Control</p><h1 className="text-xl font-bold tracking-tight">Gastos personales</h1></div>
           </div>
           <Button onClick={() => setMovementOpen(true)} className="h-11 rounded-xl px-4 shadow-sm"><Plus /> <span className="hidden sm:inline">Nuevo movimiento</span><span className="sm:hidden">Agregar</span></Button>
@@ -174,16 +174,16 @@ export function ExpenseDashboard() {
             <SummaryCard title="Presupuesto disponible" value={budget ? quetzales(available) : "Sin definir"} detail={budget ? `${budgetPercent}% utilizado` : "Agrega un límite quincenal"} icon={<Landmark />} tone={available < 0 ? "red" : "purple"} />
           </section>
 
-          <section className="rounded-3xl bg-[#173c34] p-5 text-white shadow-[0_18px_48px_rgba(23,60,52,.18)] sm:p-6">
+          <section className="rounded-3xl border border-[#a855f7]/25 bg-[linear-gradient(120deg,_#20112f_0%,_#10181a_100%)] p-5 text-white shadow-[0_18px_48px_rgba(0,0,0,.35),0_0_32px_rgba(168,85,247,.08)] sm:p-6">
             <div className="mb-4 flex flex-wrap items-start justify-between gap-4"><div><p className="text-sm text-white/65">Control del presupuesto</p><p className="mt-1 text-2xl font-bold">{budget ? `${quetzales(expense)} de ${quetzales(budget)}` : "Define cuánto puedes gastar"}</p></div><span className="rounded-full bg-white/10 px-3 py-1 text-sm font-semibold">{budget ? `${budgetPercent}% usado` : "Sin límite"}</span></div>
-            <Progress value={budgetPercent} className="h-3 bg-white/15 [&_[data-slot=progress-indicator]]:bg-[#6bd6b8]" />
+            <Progress value={budgetPercent} className="h-3 bg-white/10 [&_[data-slot=progress-indicator]]:bg-[#42f5ad] [&_[data-slot=progress-indicator]]:shadow-[0_0_14px_rgba(66,245,173,.55)]" />
           </section>
 
           <section className="grid gap-6 xl:grid-cols-[1.35fr_.65fr]">
             <article className="rounded-3xl border bg-card p-5 shadow-sm sm:p-6">
               <div className="mb-5"><h3 className="text-lg font-bold">Gastos por día</h3><p className="text-sm text-muted-foreground">Comportamiento durante la quincena</p></div>
               {expense ? <ChartContainer config={chartConfig} className="h-[260px] w-full aspect-auto">
-                <BarChart data={dayData} margin={{ left: -12, right: 4, top: 8 }}><CartesianGrid vertical={false} strokeDasharray="3 3" /><XAxis dataKey="day" tickLine={false} axisLine={false} /><YAxis tickLine={false} axisLine={false} tickFormatter={(value) => `Q${value}`} width={56} /><ChartTooltip cursor={{ fill: "#edf4f2" }} content={<ChartTooltipContent formatter={(value) => quetzales(Number(value) * 100)} />} /><Bar dataKey="amount" fill="var(--color-amount)" radius={[6, 6, 0, 0]} /></BarChart>
+                <BarChart data={dayData} margin={{ left: -12, right: 4, top: 8 }}><CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#30293d" /><XAxis dataKey="day" tickLine={false} axisLine={false} /><YAxis tickLine={false} axisLine={false} tickFormatter={(value) => `Q${value}`} width={56} /><ChartTooltip cursor={{ fill: "#1a1623" }} content={<ChartTooltipContent formatter={(value) => quetzales(Number(value) * 100)} />} /><Bar dataKey="amount" fill="var(--color-amount)" radius={[6, 6, 0, 0]} /></BarChart>
               </ChartContainer> : <EmptyChart />}
             </article>
 
@@ -196,14 +196,14 @@ export function ExpenseDashboard() {
           <section className="grid gap-6 xl:grid-cols-[1.1fr_.9fr]">
             <article className="overflow-hidden rounded-3xl border bg-card shadow-sm">
               <div className="flex items-center justify-between gap-3 border-b p-5 sm:px-6"><div><h3 className="text-lg font-bold">Movimientos</h3><p className="text-sm text-muted-foreground">Ingresos y gastos de esta quincena</p></div><Button variant="outline" size="sm" onClick={() => setMovementOpen(true)}><Plus /> Agregar</Button></div>
-              {periodMovements.length ? <div className="divide-y">{periodMovements.map((item) => <div key={item.id} className="group flex items-center gap-3 px-5 py-4 sm:px-6"><div className={`grid size-10 shrink-0 place-items-center rounded-xl ${item.type === "income" ? "bg-emerald-100 text-emerald-700" : "bg-orange-100 text-orange-700"}`}>{item.type === "income" ? <ArrowDownLeft className="size-5" /> : <ArrowUpRight className="size-5" />}</div><div className="min-w-0 flex-1"><p className="truncate font-semibold">{item.note || item.category}</p><p className="text-sm text-muted-foreground">{item.category} · {new Date(`${item.occurredOn}T12:00:00`).toLocaleDateString("es-GT", { day: "numeric", month: "short" })}</p></div><strong className={item.type === "income" ? "text-emerald-700" : "text-foreground"}>{item.type === "income" ? "+" : "−"}{quetzales(item.amountCents)}</strong><Button variant="ghost" size="icon-sm" aria-label="Eliminar movimiento" className="text-muted-foreground opacity-70 sm:opacity-0 sm:group-hover:opacity-100" onClick={() => void remove("movement", item.id)}><Trash2 /></Button></div>)}</div> : <div className="grid min-h-56 place-items-center p-8 text-center"><div><ReceiptText className="mx-auto mb-3 size-9 text-muted-foreground/55" /><p className="font-semibold">No hay movimientos en esta quincena</p><p className="mt-1 text-sm text-muted-foreground">Agrega tu primer ingreso o gasto.</p></div></div>}
+              {periodMovements.length ? <div className="divide-y">{periodMovements.map((item) => <div key={item.id} className="group flex items-center gap-3 px-5 py-4 sm:px-6"><div className={`grid size-10 shrink-0 place-items-center rounded-xl ${item.type === "income" ? "bg-[#42f5ad]/10 text-[#42f5ad]" : "bg-[#ff8a5c]/10 text-[#ff9b73]"}`}>{item.type === "income" ? <ArrowDownLeft className="size-5" /> : <ArrowUpRight className="size-5" />}</div><div className="min-w-0 flex-1"><p className="truncate font-semibold">{item.note || item.category}</p><p className="text-sm text-muted-foreground">{item.category} · {new Date(`${item.occurredOn}T12:00:00`).toLocaleDateString("es-GT", { day: "numeric", month: "short" })}</p></div><strong className={item.type === "income" ? "text-[#42f5ad]" : "text-foreground"}>{item.type === "income" ? "+" : "−"}{quetzales(item.amountCents)}</strong><Button variant="ghost" size="icon-sm" aria-label="Eliminar movimiento" className="text-muted-foreground opacity-70 sm:opacity-0 sm:group-hover:opacity-100" onClick={() => void remove("movement", item.id)}><Trash2 /></Button></div>)}</div> : <div className="grid min-h-56 place-items-center p-8 text-center"><div><ReceiptText className="mx-auto mb-3 size-9 text-muted-foreground/55" /><p className="font-semibold">No hay movimientos en esta quincena</p><p className="mt-1 text-sm text-muted-foreground">Agrega tu primer ingreso o gasto.</p></div></div>}
             </article>
 
             <article className="rounded-3xl border bg-card p-5 shadow-sm sm:p-6">
               <div className="mb-5 flex items-center justify-between gap-3"><div><h3 className="text-lg font-bold">Metas y deudas</h3><p className="text-sm text-muted-foreground">Avance de tus compromisos</p></div><Button variant="outline" size="sm" onClick={() => setGoalOpen(true)}><Plus /> Nueva</Button></div>
               {data.goals.length ? <div className="space-y-4">{data.goals.map((goal) => {
                 const percent = Math.min(100, Math.round((goal.currentCents / goal.targetCents) * 100));
-                return <div key={goal.id} className="rounded-2xl border bg-muted/25 p-4"><div className="flex items-start gap-3"><div className={`grid size-10 shrink-0 place-items-center rounded-xl ${goal.kind === "saving" ? "bg-teal-100 text-teal-700" : "bg-rose-100 text-rose-700"}`}>{goal.kind === "saving" ? <Target className="size-5" /> : <BanknoteArrowDown className="size-5" />}</div><div className="min-w-0 flex-1"><div className="flex items-center justify-between gap-2"><p className="truncate font-semibold">{goal.name}</p><span className="text-sm font-bold">{percent}%</span></div><p className="mt-0.5 text-sm text-muted-foreground">{goal.kind === "saving" ? "Ahorrado" : "Pagado"}: {quetzales(goal.currentCents)} de {quetzales(goal.targetCents)}</p>{goal.dueDate && <p className="mt-1 text-xs text-muted-foreground">Fecha objetivo: {new Date(`${goal.dueDate}T12:00:00`).toLocaleDateString("es-GT")}</p>}</div></div><Progress value={percent} className="mt-3 h-2" /><div className="mt-3 flex justify-end gap-2"><Button variant="ghost" size="sm" className="text-muted-foreground" onClick={() => void remove("goal", goal.id)}><Trash2 /> Eliminar</Button>{percent < 100 && <Button size="sm" variant="secondary" onClick={() => setProgressGoal(goal)}>Registrar abono</Button>}</div></div>;
+                return <div key={goal.id} className="rounded-2xl border bg-muted/25 p-4"><div className="flex items-start gap-3"><div className={`grid size-10 shrink-0 place-items-center rounded-xl ${goal.kind === "saving" ? "bg-[#42f5ad]/10 text-[#42f5ad]" : "bg-[#ff5d8f]/10 text-[#ff729c]"}`}>{goal.kind === "saving" ? <Target className="size-5" /> : <BanknoteArrowDown className="size-5" />}</div><div className="min-w-0 flex-1"><div className="flex items-center justify-between gap-2"><p className="truncate font-semibold">{goal.name}</p><span className="text-sm font-bold">{percent}%</span></div><p className="mt-0.5 text-sm text-muted-foreground">{goal.kind === "saving" ? "Ahorrado" : "Pagado"}: {quetzales(goal.currentCents)} de {quetzales(goal.targetCents)}</p>{goal.dueDate && <p className="mt-1 text-xs text-muted-foreground">Fecha objetivo: {new Date(`${goal.dueDate}T12:00:00`).toLocaleDateString("es-GT")}</p>}</div></div><Progress value={percent} className="mt-3 h-2 [&_[data-slot=progress-indicator]]:bg-[#42f5ad]" /><div className="mt-3 flex justify-end gap-2"><Button variant="ghost" size="sm" className="text-muted-foreground" onClick={() => void remove("goal", goal.id)}><Trash2 /> Eliminar</Button>{percent < 100 && <Button size="sm" variant="secondary" onClick={() => setProgressGoal(goal)}>Registrar abono</Button>}</div></div>;
               })}</div> : <div className="grid min-h-48 place-items-center text-center"><div><Target className="mx-auto mb-3 size-9 text-muted-foreground/55" /><p className="font-semibold">Todavía no hay metas ni deudas</p><p className="mt-1 text-sm text-muted-foreground">Agrégalas para visualizar tu avance.</p></div></div>}
             </article>
           </section>
@@ -219,8 +219,8 @@ export function ExpenseDashboard() {
 }
 
 function SummaryCard({ title, value, detail, icon, tone }: { title: string; value: string; detail: string; icon: React.ReactNode; tone: "green" | "blue" | "orange" | "purple" | "red" }) {
-  const tones = { green: "bg-emerald-100 text-emerald-700", blue: "bg-sky-100 text-sky-700", orange: "bg-orange-100 text-orange-700", purple: "bg-violet-100 text-violet-700", red: "bg-rose-100 text-rose-700" };
-  return <article className="rounded-3xl border bg-card p-5 shadow-sm"><div className="mb-5 flex items-center justify-between"><p className="text-sm font-medium text-muted-foreground">{title}</p><div className={`grid size-10 place-items-center rounded-xl [&>svg]:size-5 ${tones[tone]}`}>{icon}</div></div><p className="text-2xl font-bold tracking-tight">{value}</p><p className="mt-1 text-sm text-muted-foreground">{detail}</p></article>;
+  const tones = { green: "bg-[#42f5ad]/10 text-[#42f5ad]", blue: "bg-[#7c8cff]/10 text-[#91a0ff]", orange: "bg-[#ff8a5c]/10 text-[#ff9b73]", purple: "bg-[#a855f7]/12 text-[#c982ff]", red: "bg-[#ff5d8f]/10 text-[#ff729c]" };
+  return <article className="rounded-3xl border bg-card p-5 shadow-[0_12px_34px_rgba(0,0,0,.22)] transition-colors hover:border-[#a855f7]/35"><div className="mb-5 flex items-center justify-between"><p className="text-sm font-medium text-muted-foreground">{title}</p><div className={`grid size-10 place-items-center rounded-xl [&>svg]:size-5 ${tones[tone]}`}>{icon}</div></div><p className="text-2xl font-bold tracking-tight">{value}</p><p className="mt-1 text-sm text-muted-foreground">{detail}</p></article>;
 }
 
 function EmptyChart({ compact = false }: { compact?: boolean }) {
@@ -228,7 +228,7 @@ function EmptyChart({ compact = false }: { compact?: boolean }) {
 }
 
 function DashboardSkeleton() {
-  return <div className="space-y-6 animate-pulse"><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-36 rounded-3xl bg-white/75" />)}</div><div className="h-32 rounded-3xl bg-[#173c34]/20" /><div className="grid gap-6 xl:grid-cols-2"><div className="h-80 rounded-3xl bg-white/75" /><div className="h-80 rounded-3xl bg-white/75" /></div></div>;
+  return <div className="space-y-6 animate-pulse"><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-36 rounded-3xl bg-card/75" />)}</div><div className="h-32 rounded-3xl bg-primary/10" /><div className="grid gap-6 xl:grid-cols-2"><div className="h-80 rounded-3xl bg-card/75" /><div className="h-80 rounded-3xl bg-card/75" /></div></div>;
 }
 
 function MovementDialog({ open, setOpen, onSaved }: { open: boolean; setOpen: (value: boolean) => void; onSaved: () => Promise<void> }) {
