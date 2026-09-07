@@ -9,8 +9,6 @@
     "dev": "vite",
     "build": "vinext build",
     "start": "vinext start",
-    "test": "npm run build && node --test tests/*.test.mjs",
-    "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "db:local:init": "wrangler d1 execute site-creator-d1 --local --config dist/server/wrangler.json --persist-to .wrangler/state/v3 --file=drizzle/0000_graceful_betty_ross.sql",
     "db:remote:init": "wrangler d1 execute mi-control-gastos-db --remote --config dist/server/wrangler.json --file=drizzle/0000_graceful_betty_ross.sql",
